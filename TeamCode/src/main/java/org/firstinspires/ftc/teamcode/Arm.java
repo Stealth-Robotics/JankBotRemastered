@@ -31,7 +31,6 @@ public class Arm {
     private boolean cancel = false;
 
     public Arm (DcMotor lift, DcMotor extend, DigitalChannel liftLimitSwitch, DigitalChannel extendLimitSwitch,
-                Servo leftHopper, Servo rightHopper, Servo tiltHopper,
                 CRServo leftWheelIntake, CRServo rightWheelIntake, Servo leftDeployIntake, Servo rightDeployIntake,
                 Servo latchRelease, DcMotor winch)
     {
