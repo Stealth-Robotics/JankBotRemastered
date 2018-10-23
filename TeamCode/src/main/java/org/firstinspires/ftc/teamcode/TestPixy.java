@@ -22,7 +22,7 @@ public class TestPixy extends OpMode
     {
         telemetry.addData("Status", "Initialized");
 
-        pixyCam = new PixyCam(hardwareMap.get(I2cDeviceSynch.class, "pixyCam"));
+        pixyCam = new PixyCam(hardwareMap.get(I2cDeviceSynch.class, "pixy"));
     }
 
     /*

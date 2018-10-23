@@ -28,7 +28,6 @@ public class JankBot_AutoOP extends LinearOpMode
 
         arm = new Arm(hardwareMap.get(DcMotor.class, "lift"), hardwareMap.get(DcMotor.class, "extend"),
                 hardwareMap.get(DigitalChannel.class, "liftLimit"), hardwareMap.get(DigitalChannel.class, "extendLimit"),
-                hardwareMap.get(Servo.class, "leftHopper"), hardwareMap.get(Servo.class, "rightHopper"), hardwareMap.get(Servo.class, "tiltHoper"),
                 hardwareMap.get(CRServo.class, "leftWheelIntake"), hardwareMap.get(CRServo.class, "rightWheelIntake"),
                 hardwareMap.get(Servo.class, "leftDeployIntake"), hardwareMap.get(Servo.class, "rightDeployIntake"),
                 hardwareMap.get(Servo.class, "releaseLatch"), hardwareMap.get(DcMotor.class, "winchLatch"));
