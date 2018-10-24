@@ -75,6 +75,7 @@ public class JankBot_TeleOP extends OpMode
     {
         driveBase.setSpeed(driveOperator.speed());
         driveBase.setRotSpeed(driveOperator.rotSpeed());
+        driveBase.update();
 
         if (driveOperator.climb())
         {
