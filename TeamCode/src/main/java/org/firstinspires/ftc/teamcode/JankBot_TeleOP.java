@@ -37,8 +37,8 @@ public class JankBot_TeleOP extends OpMode
         arm = new Arm(hardwareMap.get(DcMotor.class, "lift"), hardwareMap.get(DcMotor.class, "extend"),
                 hardwareMap.get(DigitalChannel.class, "liftLimit"), hardwareMap.get(DigitalChannel.class, "extendLimit"),
                 hardwareMap.get(CRServo.class, "leftWheelIntake"), hardwareMap.get(CRServo.class, "rightWheelIntake"),
-                hardwareMap.get(Servo.class, "leftDeployIntake"), hardwareMap.get(Servo.class, "rightDeployIntake"),
-                hardwareMap.get(Servo.class, "releaseLatch"), hardwareMap.get(DcMotor.class, "winchLatch"));
+                hardwareMap.get(DcMotor.class, "tiltIntake"),
+                hardwareMap.get(Servo.class, "releaseLatch"));
 
         driveBase = new DriveBase(hardwareMap.get(DcMotor.class, "left1"), hardwareMap.get(DcMotor.class, "left2"),
                 hardwareMap.get(DcMotor.class, "right1"), hardwareMap.get(DcMotor.class, "right2"),
@@ -62,8 +62,8 @@ public class JankBot_TeleOP extends OpMode
     @Override
     public void start()
     {
-        arm.zero();
-        while(arm.zeroThread.isAlive());
+//        arm.zero();
+//        while(arm.zeroThread.isAlive());
         runtime.reset();
     }
 
@@ -85,34 +85,31 @@ public class JankBot_TeleOP extends OpMode
 
         arm.setLiftPosition(mechOperator.liftPosition());
         arm.setExtendPostion(mechOperator.extendPosition());
+        arm.intake.setTiltPosition(mechOperator.tiltIntakePosition());
 
         if (mechOperator.runIntake())
         {
             arm.intake.run();
         }
-
-        if (mechOperator.toggleDeployIntake())
+        else if (mechOperator.reverseIntake())
         {
-            if (arm.intake.isDeployed())
-            {
-                arm.intake.undeploy();
-            }
-            else
-            {
-                arm.intake.deploy();
-            }
+            arm.intake.reverse();
+        }
+        else
+        {
+            arm.intake.stop();
         }
     }
 
     /*
      * Code to run ONCE after the driver hits STOP
      */
-    @Override
-    public void stop() {
-        if (arm.zeroThread.isAlive())
-        {
-            arm.cancelZero();
-        }
-    }
+//    @Override
+//    public void stop() {
+//        if (arm.zeroThread.isAlive())
+//        {
+//            arm.cancelZero();
+//        }
+//    }
 
 }

@@ -29,8 +29,8 @@ public class JankBot_AutoOP extends LinearOpMode
         arm = new Arm(hardwareMap.get(DcMotor.class, "lift"), hardwareMap.get(DcMotor.class, "extend"),
                 hardwareMap.get(DigitalChannel.class, "liftLimit"), hardwareMap.get(DigitalChannel.class, "extendLimit"),
                 hardwareMap.get(CRServo.class, "leftWheelIntake"), hardwareMap.get(CRServo.class, "rightWheelIntake"),
-                hardwareMap.get(Servo.class, "leftDeployIntake"), hardwareMap.get(Servo.class, "rightDeployIntake"),
-                hardwareMap.get(Servo.class, "releaseLatch"), hardwareMap.get(DcMotor.class, "winchLatch"));
+                hardwareMap.get(DcMotor.class, "tiltIntake"),
+                hardwareMap.get(Servo.class, "releaseLatch"));
 
         base = new DriveBase(hardwareMap.get(DcMotor.class, "left1"), hardwareMap.get(DcMotor.class, "left1"),
                 hardwareMap.get(DcMotor.class, "right1"), hardwareMap.get(DcMotor.class, "right2"),
@@ -40,42 +40,45 @@ public class JankBot_AutoOP extends LinearOpMode
 
         waitForStart();
 
-        arm.zero();
-        while (arm.zeroThread.isAlive())
-        {
-            if (!opModeIsActive())
-            {
-                arm.cancelZero();
-            }
-        }
+//        arm.zero();
+//        while (arm.zeroThread.isAlive())
+//        {
+//            if (!opModeIsActive())
+//            {
+//                arm.cancelZero();
+//            }
+//        }
 
         arm.descend();
 
         base.setTargetHeading(pixy.firstBlockAngle());
         base.setSpeed(0.5);
-        long startTime = System.currentTimeMillis();
-        //TODO make function to simplify this
-        while(System.currentTimeMillis() - startTime <= 1000)
-        {
-            base.update();
-        }
 
-        base.setSpeed(0.5);
+        waitToDrive(1000);
 
-        while(System.currentTimeMillis() - startTime <= 1000)
-        {
-            base.update();
-        }
+        arm.intake.run();
+
+        waitToDrive(1000);
+
+        arm.intake.stop();
 
         base.setSpeed(0);
         base.setTargetHeading(-45);
-        startTime = System.currentTimeMillis();
-        while(System.currentTimeMillis() - startTime <= 3000)
-        {
-            base.update();
-        }
+
+        waitToDrive(3000);
+
         base.setSpeed(0);
 
         //Deploy Marker
+    }
+
+    public void waitToDrive(int wait)
+    {
+        long start = System.currentTimeMillis();
+
+        while(System.currentTimeMillis() - start <= wait)
+        {
+            base.update();
+        }
     }
 }

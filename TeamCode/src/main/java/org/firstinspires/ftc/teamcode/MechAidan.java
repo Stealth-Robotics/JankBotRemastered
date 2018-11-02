@@ -8,21 +8,17 @@ public class MechAidan implements MechOperator
     private final int LIFT_LOWER_LIMIT = 0;
     private final int LIFT_UPPER_LIMIT = 500;
 
-    //TODO find actual limits
     private final int EXTEND_LOWER_LIMIT = 0;
     private final int EXTEND_UPPER_LIMIT = 1000;
 
-    Gamepad gamepad;
+    private final double TILT_LOWER_LIMIT = 0;
+    private final double TILT_UPPER_LIMIT = 500;
 
-    private boolean yTracker;
-    private boolean isIntakeDeployed;
+    Gamepad gamepad;
 
     public MechAidan(Gamepad gamepad)
     {
         this.gamepad = gamepad;
-
-        yTracker = false;
-        isIntakeDeployed = true;
     }
 
     @Override
@@ -34,7 +30,7 @@ public class MechAidan implements MechOperator
     @Override
     public int extendPosition()
     {
-        return (int)(-gamepad.left_stick_y * EXTEND_UPPER_LIMIT);
+        return (int)(-gamepad.left_stick_y * EXTEND_UPPER_LIMIT - EXTEND_UPPER_LIMIT / 2);
     }
 
     @Override
@@ -44,15 +40,15 @@ public class MechAidan implements MechOperator
     }
 
     @Override
-    public boolean toggleDeployIntake()
+    public boolean reverseIntake()
     {
-        if (gamepad.y && !yTracker)
-        {
-            isIntakeDeployed = !isIntakeDeployed;
-        }
-
-        yTracker = gamepad.y;
-
-        return isIntakeDeployed;
+        return gamepad.x;
     }
+
+    @Override
+    public int tiltIntakePosition()
+    {
+        return (int)(-gamepad.right_stick_y * TILT_UPPER_LIMIT - TILT_UPPER_LIMIT / 2);
+    }
+
 }
