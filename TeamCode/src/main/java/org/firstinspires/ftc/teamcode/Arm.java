@@ -106,7 +106,7 @@ public class Arm {
     {
         intake.undeploy();
 
-        //motors are floated so they don't interfere with descent
+        //motors are floated so they don't interfere with ascent
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         extend.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
