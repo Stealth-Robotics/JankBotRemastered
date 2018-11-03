@@ -9,7 +9,7 @@ import static java.lang.Thread.sleep;
 
 public class Arm {
 
-    public boolean isClimbing;
+    public boolean climbed;
 
     //TODO find actual limits
     private final int LIFT_LOWER_LIMIT = 0;
@@ -27,12 +27,11 @@ public class Arm {
 //    private DigitalChannel liftLimitSwitch;
 //    private DigitalChannel extendLimitSwitch;
 
-    //public Hopper hopper;
     public Intake intake;
     public Latch latch;
 
-    public Thread zeroThread;
-    private boolean cancel = false;
+//    public Thread zeroThread;
+//    private boolean cancel = false;
 
     public Arm (DcMotor lift, DcMotor extend, DigitalChannel liftLimitSwitch, DigitalChannel extendLimitSwitch,
                 CRServo leftWheelIntake, CRServo rightWheelIntake, DcMotor tiltIntake,
@@ -48,6 +47,8 @@ public class Arm {
 
         intake = new Intake(leftWheelIntake, rightWheelIntake, tiltIntake);
         latch = new Latch(latchRelease);
+
+        climbed = false;
     }
 
     public void setLiftMode(DcMotor.RunMode mode)
@@ -109,6 +110,8 @@ public class Arm {
 
     public void ascend()
     {
+        climbed = true;
+
         //motors are floated so they don't interfere with ascent
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         extend.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);

@@ -73,6 +73,11 @@ public class JankBot_TeleOP extends OpMode
     @Override
     public void loop()
     {
+        if (arm.climbed)
+        {
+            return;
+        }
+
         driveBase.setSpeed(driveOperator.speed());
         driveBase.setRotSpeed(driveOperator.rotSpeed());
 //        driveBase.update();
