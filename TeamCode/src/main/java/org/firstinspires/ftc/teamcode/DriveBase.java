@@ -115,6 +115,30 @@ public class DriveBase {
         }
     }
 
+    public void updateTelOp()
+    {
+        double leftPower = speed + rotSpeed;
+        double rightPower = speed - rotSpeed;
+
+        double maxPower = Math.abs(speed) + Math.abs(rotSpeed);
+        if (maxPower > 1)
+        {
+            leftPower /= maxPower;
+            rightPower /= maxPower;
+        }
+
+        left1.setPower(leftPower);
+        left2.setPower(leftPower);
+        right1.setPower(rightPower);
+        right2.setPower(rightPower);
+
+        //if drivebase is supposed to keep rotating, adjust the target heading appropriately
+        if (rotSpeed != 0)
+        {
+            adjustHeading(rotSpeed);
+        }
+    }
+
     private void adjustHeading(double speed)
     {
         targetHeading -= speed * 1 / rotKP;

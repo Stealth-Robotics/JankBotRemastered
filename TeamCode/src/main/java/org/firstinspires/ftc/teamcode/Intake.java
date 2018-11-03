@@ -1,35 +1,32 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class Intake
 {
     //TODO find actual limits
-    private final double UNDEPLOYED_LIMIT = 0;
-    private final double DEPLOYED_LIMIT = 0.5;
+    private final int LOWER_LIMIT = 0;
+    private final int UPPER_LIMIT = 500;
 
     private CRServo leftWheel;
     private CRServo rightWheel;
 
-    private Servo leftDeploy;
-    private Servo rightDeploy;
+    private DcMotor tilt;
 
     public Intake(CRServo leftWheel, CRServo rightWheel,
-                  Servo leftDeploy, Servo rightDeploy)
+                  DcMotor tilt)
     {
         this.leftWheel = leftWheel;
         this.rightWheel = rightWheel;
 
         this.rightWheel.setDirection(CRServo.Direction.REVERSE);
 
-        this.leftDeploy = leftDeploy;
-        this.rightDeploy = rightDeploy;
+        this.tilt = tilt;
 
-        this.leftDeploy.scaleRange(UNDEPLOYED_LIMIT, DEPLOYED_LIMIT);
-        this.rightDeploy.scaleRange(UNDEPLOYED_LIMIT, DEPLOYED_LIMIT);
-
-        this.rightDeploy.setDirection(Servo.Direction.REVERSE);
+        tilt.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        tilt.setPower(0.75);
     }
 
     public void run()
@@ -38,26 +35,33 @@ public class Intake
         rightWheel.setPower(1);
     }
 
+    public void reverse()
+    {
+        leftWheel.setPower(-1);
+        rightWheel.setPower(-1);
+    }
+
     public void stop()
     {
         leftWheel.setPower(0);
         rightWheel.setPower(0);
     }
 
-    public void deploy()
+    public void setTiltPosition(int pos)
     {
-        leftDeploy.setPosition(1);
-        rightDeploy.setPosition(1);
+        if (pos >= LOWER_LIMIT && pos <= UPPER_LIMIT)
+        {
+            tilt.setTargetPosition(pos);
+        }
     }
 
-    public void undeploy()
+    public void setTiltSpeed(double speed)
     {
-        leftDeploy.setPosition(0);
-        rightDeploy.setPosition(0);
+        tilt.setPower(speed);
     }
 
-    public boolean isDeployed()
+    public int getTiltPosition()
     {
-        return leftDeploy.getPosition() > 0.5;
+        return tilt.getCurrentPosition();
     }
 }

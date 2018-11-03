@@ -138,24 +138,24 @@ public final class R {
     public static final class id {
         private id() {}
 
-        public static final int colorSwatch = 0x7f060023;
-        public static final int countdownDescription = 0x7f06002b;
-        public static final int countdownNumber = 0x7f06002c;
-        public static final int feedback = 0x7f060039;
-        public static final int feedbackOKButton = 0x7f06003c;
-        public static final int feedbackText0 = 0x7f06003d;
-        public static final int feedbackText1 = 0x7f06003e;
-        public static final int loadingIndicator = 0x7f06006b;
-        public static final int loadingIndicatorOverlay = 0x7f06006c;
-        public static final int wifiDisabledNotification = 0x7f0600d0;
+        public static final int colorSwatch = 0x7f060024;
+        public static final int countdownDescription = 0x7f06002c;
+        public static final int countdownNumber = 0x7f06002d;
+        public static final int feedback = 0x7f06003a;
+        public static final int feedbackOKButton = 0x7f06003d;
+        public static final int feedbackText0 = 0x7f06003e;
+        public static final int feedbackText1 = 0x7f06003f;
+        public static final int loadingIndicator = 0x7f06006c;
+        public static final int loadingIndicatorOverlay = 0x7f06006d;
+        public static final int wifiDisabledNotification = 0x7f0600d1;
     }
     public static final class layout {
         private layout() {}
 
-        public static final int color_list_preference_line_item = 0x7f070016;
-        public static final int feedback = 0x7f07001b;
-        public static final int fragment_wifi_mute = 0x7f07001d;
-        public static final int loading_indicator_overlay = 0x7f070025;
+        public static final int color_list_preference_line_item = 0x7f070017;
+        public static final int feedback = 0x7f07001c;
+        public static final int fragment_wifi_mute = 0x7f07001e;
+        public static final int loading_indicator_overlay = 0x7f070026;
     }
     public static final class raw {
         private raw() {}

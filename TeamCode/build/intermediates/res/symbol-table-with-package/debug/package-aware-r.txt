@@ -120,6 +120,7 @@ drawable ic_launcher
 drawable icon_menu
 drawable icon_robotcontroller
 id RelativeLayout
+id aboutList
 id action_about
 id action_blocks
 id action_configure_robot
@@ -329,6 +330,7 @@ id widiName
 id wifiConnected
 id wifiDisabledNotification
 id wifiEnabled
+layout activity_about
 layout activity_blocks
 layout activity_config_wifi_direct
 layout activity_configure_from_template

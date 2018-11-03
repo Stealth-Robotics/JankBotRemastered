@@ -5,7 +5,11 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import static java.lang.Thread.sleep;
+
 public class Arm {
+
+    public boolean climbed;
 
     //TODO find actual limits
     private final int LIFT_LOWER_LIMIT = 0;
@@ -15,34 +19,36 @@ public class Arm {
     private final int EXTEND_LOWER_LIMIT = 0;
     private final int EXTEND_UPPER_LIMIT = 1000;
 
-    private boolean isZeroed = false;
+//    private boolean isZeroed = false;
 
     private DcMotor lift;
     private DcMotor extend;
 
-    private DigitalChannel liftLimitSwitch;
-    private DigitalChannel extendLimitSwitch;
+//    private DigitalChannel liftLimitSwitch;
+//    private DigitalChannel extendLimitSwitch;
 
-    //public Hopper hopper;
     public Intake intake;
     public Latch latch;
 
-    public Thread zeroThread;
-    private boolean cancel = false;
+//    public Thread zeroThread;
+//    private boolean cancel = false;
 
     public Arm (DcMotor lift, DcMotor extend, DigitalChannel liftLimitSwitch, DigitalChannel extendLimitSwitch,
-                CRServo leftWheelIntake, CRServo rightWheelIntake, Servo leftDeployIntake, Servo rightDeployIntake,
-                Servo latchRelease, DcMotor winch)
+                CRServo leftWheelIntake, CRServo rightWheelIntake, DcMotor tiltIntake,
+                Servo latchRelease)
     {
         this.lift = lift;
+        this.lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         this.extend = extend;
+        this.extend.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        this.liftLimitSwitch = liftLimitSwitch;
-        this.extendLimitSwitch = extendLimitSwitch;
+//        this.liftLimitSwitch = liftLimitSwitch;
+//        this.extendLimitSwitch = extendLimitSwitch;
 
-        //hopper = new Hopper(leftHopper, rightHopper, tiltHopper);
-        intake = new Intake(leftWheelIntake, rightWheelIntake, leftDeployIntake, rightDeployIntake);
-        latch = new Latch(latchRelease, winch);
+        intake = new Intake(leftWheelIntake, rightWheelIntake, tiltIntake);
+        latch = new Latch(latchRelease);
+
+        climbed = false;
     }
 
     public void setLiftMode(DcMotor.RunMode mode)
@@ -54,8 +60,8 @@ public class Arm {
     {
         int currentPosition = lift.getCurrentPosition();
         if (power >= 0 && currentPosition <= LIFT_UPPER_LIMIT ||
-                power <= 0 && currentPosition >= LIFT_LOWER_LIMIT &&
-                isZeroed)
+                power <= 0 && currentPosition >= LIFT_LOWER_LIMIT)// &&
+//                isZeroed)
         {
             lift.setPower(power);
         }
@@ -63,7 +69,7 @@ public class Arm {
 
     public void setLiftPosition(int position)
     {
-        if (position >= LIFT_LOWER_LIMIT && position <= LIFT_UPPER_LIMIT && isZeroed)
+        if (position >= LIFT_LOWER_LIMIT && position <= LIFT_UPPER_LIMIT)// && isZeroed)
         {
             lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             lift.setTargetPosition(position);
@@ -79,8 +85,8 @@ public class Arm {
     {
         int currentPosition = extend.getCurrentPosition();
         if (power >= 0 && currentPosition <= EXTEND_UPPER_LIMIT ||
-                power <= 0 && currentPosition >= EXTEND_LOWER_LIMIT &&
-                isZeroed)
+                power <= 0 && currentPosition >= EXTEND_LOWER_LIMIT)// &&
+//                isZeroed)
         {
             extend.setPower(power);
         }
@@ -88,7 +94,7 @@ public class Arm {
 
     public void setExtendPostion(int position)
     {
-        if (position >= EXTEND_LOWER_LIMIT && position <= EXTEND_UPPER_LIMIT && isZeroed)
+        if (position >= EXTEND_LOWER_LIMIT && position <= EXTEND_UPPER_LIMIT)// && isZeroed)
         {
             extend.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             extend.setTargetPosition(position);
@@ -104,13 +110,32 @@ public class Arm {
 
     public void ascend()
     {
-        intake.undeploy();
+        climbed = true;
 
         //motors are floated so they don't interfere with ascent
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         extend.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
         latch.unrelease();
+        try
+        {
+            sleep(500);
+        }
+        catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
+
+        lift.setTargetPosition(LIFT_LOWER_LIMIT);
+
+        try
+        {
+            sleep(3000);
+        }
+        catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
 
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         extend.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -122,76 +147,90 @@ public class Arm {
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         extend.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
+        lift.setTargetPosition(LIFT_UPPER_LIMIT);
+        try
+        {
+            sleep(3000);
+        }
+        catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
+
         latch.release();
+        try
+        {
+            sleep(500);
+        }
+        catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
 
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         extend.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        intake.deploy();
     }
 
-    public void zero()
-    {
-        //this creates its own thread so that it can be stopped with the OpMode
-        Runnable zeroRunnable = new Runnable() {
-            @Override
-            public void run()
-            {
-                {
-                    boolean liftLimit;
-                    boolean extendLimit;
-
-
-
-                    do
-                    {
-                        liftLimit = liftLimitSwitch.getState();
-                        extendLimit = extendLimitSwitch.getState();
-
-                        if (!liftLimit)
-                        {
-                            lift.setPower(-0.5);
-                        }
-                        else
-                        {
-                            lift.setPower(0);
-                        }
-
-                        if (extendLimit)
-                        {
-                            extend.setPower(-0.5);
-                        }
-                        else
-                        {
-                            extend.setPower(0);
-                        }
-
-                        if (cancel)
-                        {
-                            break;
-                        }
-                    } while (!liftLimit || !extendLimit);
-
-                    if (!cancel)
-                    {
-                        lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                        lift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-                        extend.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                        extend.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-                        isZeroed = true;
-                    }
-                }
-            }
-        };
-
-        zeroThread = new Thread(zeroRunnable);
-        zeroThread.start();
-    }
-
-    public void cancelZero()
-    {
-        cancel = true;
-    }
+//    public void zero()
+//    {
+//        //this creates its own thread so that it can be stopped with the OpMode
+//        Runnable zeroRunnable = new Runnable() {
+//            @Override
+//            public void run()
+//            {
+//                {
+//                    boolean liftLimit;
+//                    boolean extendLimit;
+//
+//                    do
+//                    {
+//                        liftLimit = liftLimitSwitch.getState();
+//                        extendLimit = extendLimitSwitch.getState();
+//
+//                        if (!liftLimit)
+//                        {
+//                            lift.setPower(-0.5);
+//                        }
+//                        else
+//                        {
+//                            lift.setPower(0);
+//                        }
+//
+//                        if (extendLimit)
+//                        {
+//                            extend.setPower(-0.5);
+//                        }
+//                        else
+//                        {
+//                            extend.setPower(0);
+//                        }
+//
+//                        if (cancel)
+//                        {
+//                            break;
+//                        }
+//                    } while (!liftLimit || !extendLimit);
+//
+//                    if (!cancel)
+//                    {
+//                        lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//                        lift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//
+//                        extend.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//                        extend.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//
+//                        isZeroed = true;
+//                    }
+//                }
+//            }
+//        };
+//
+//        zeroThread = new Thread(zeroRunnable);
+//        zeroThread.start();
+//    }
+//
+//    public void cancelZero()
+//    {
+//        cancel = true;
+//    }
 }

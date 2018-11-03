@@ -8,5 +8,7 @@ public interface MechOperator
 
     boolean runIntake();
 
-    boolean toggleDeployIntake();
+    boolean reverseIntake();
+
+    int tiltIntakePosition();
 }
