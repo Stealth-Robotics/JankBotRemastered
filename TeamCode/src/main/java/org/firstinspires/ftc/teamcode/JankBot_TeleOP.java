@@ -65,6 +65,8 @@ public class JankBot_TeleOP extends OpMode
 //        arm.zero();
 //        while(arm.zeroThread.isAlive());
         runtime.reset();
+        arm.setLiftPower(1);
+        arm.setExtendPower(1);
     }
 
     /*

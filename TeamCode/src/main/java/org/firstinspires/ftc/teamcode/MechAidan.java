@@ -12,7 +12,7 @@ public class MechAidan implements MechOperator
     private final int EXTEND_UPPER_LIMIT = 1000;
 
     private final int TILT_LOWER_LIMIT = 0;
-    private final int TILT_UPPER_LIMIT = 500;
+    private final int TILT_UPPER_LIMIT = 100;
 
     Gamepad gamepad;
 
@@ -48,7 +48,7 @@ public class MechAidan implements MechOperator
     @Override
     public int tiltIntakePosition()
     {
-        return (int)(-gamepad.right_stick_y * TILT_UPPER_LIMIT + TILT_UPPER_LIMIT / 2);
+        return 0;//(int)(-gamepad.right_stick_y * TILT_UPPER_LIMIT + TILT_UPPER_LIMIT / 2);
     }
 
 }

@@ -44,8 +44,14 @@ public class MechEthan implements MechOperator
     }
 
     @Override
-    public boolean toggleDeployIntake()
+    public boolean reverseIntake()
     {
-        return gamepad.x;
+        return false;
+    }
+
+    @Override
+    public int tiltIntakePosition()
+    {
+        return 0;
     }
 }

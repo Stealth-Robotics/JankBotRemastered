@@ -39,6 +39,7 @@ public class Arm {
     {
         this.lift = lift;
         this.lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
         this.extend = extend;
         this.extend.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
