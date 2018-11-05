@@ -2,6 +2,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -13,7 +14,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 //starts facing crater, knocks center mineral, goes straight down to depot,
 //deploys marker, goes to crater
-@TeleOp(name="AutoOP2", group="Linear Opmode")
+@Autonomous(name="AutoOP4", group="Linear Opmode")
 public class JankBot_AutoOP4 extends LinearOpMode
 {
     // Declare OpMode members.
