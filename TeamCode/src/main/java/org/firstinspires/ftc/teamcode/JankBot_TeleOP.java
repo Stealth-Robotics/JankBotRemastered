@@ -67,6 +67,8 @@ public class JankBot_TeleOP extends OpMode
         runtime.reset();
         arm.setLiftPower(1);
         arm.setExtendPower(1);
+
+        arm.intake.setTiltPower(0.5);
     }
 
     /*
@@ -92,6 +94,7 @@ public class JankBot_TeleOP extends OpMode
 
         arm.setLiftPosition(mechOperator.liftPosition());
         arm.setExtendPostion(mechOperator.extendPosition());
+
         arm.intake.setTiltPosition(mechOperator.tiltIntakePosition());
 
         if (mechOperator.runIntake())

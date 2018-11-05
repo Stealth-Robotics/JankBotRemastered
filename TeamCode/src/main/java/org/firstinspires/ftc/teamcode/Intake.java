@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class Intake
@@ -24,9 +25,8 @@ public class Intake
         this.rightWheel.setDirection(CRServo.Direction.REVERSE);
 
         this.tilt = tilt;
-
-        tilt.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        tilt.setPower(0.75);
+        this.tilt.setDirection(DcMotor.Direction.REVERSE);
+        this.tilt.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
     public void run()
@@ -55,9 +55,9 @@ public class Intake
         }
     }
 
-    public void setTiltSpeed(double speed)
+    public void setTiltPower(double power)
     {
-        tilt.setPower(speed);
+        tilt.setPower(power);
     }
 
     public int getTiltPosition()

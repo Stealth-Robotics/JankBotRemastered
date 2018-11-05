@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -38,6 +39,7 @@ public class Arm {
                 Servo latchRelease)
     {
         this.lift = lift;
+        this.lift.setDirection(DcMotorSimple.Direction.REVERSE);
         this.lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         this.extend = extend;
