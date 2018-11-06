@@ -2,15 +2,9 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Servo;
 
 public class Intake
 {
-    //TODO find actual limits
-    private final int LOWER_LIMIT = 0;
-    private final int UPPER_LIMIT = 500;
-
     private CRServo leftWheel;
     private CRServo rightWheel;
 
@@ -49,7 +43,7 @@ public class Intake
 
     public void setTiltPosition(int pos)
     {
-        if (pos >= LOWER_LIMIT && pos <= UPPER_LIMIT)
+        if (pos >= Constants.TILT_LOWER_LIMIT && pos <= Constants.TILT_LOWER_LIMIT);
         {
             tilt.setTargetPosition(pos);
         }

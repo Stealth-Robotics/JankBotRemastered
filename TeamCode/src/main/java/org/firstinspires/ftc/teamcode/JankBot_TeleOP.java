@@ -64,11 +64,12 @@ public class JankBot_TeleOP extends OpMode
     {
 //        arm.zero();
 //        while(arm.zeroThread.isAlive());
+
         runtime.reset();
         arm.setLiftPower(1);
         arm.setExtendPower(1);
 
-        arm.intake.setTiltPower(0.5);
+        arm.intake.setTiltPower(0.25);
     }
 
     /*
@@ -109,6 +110,9 @@ public class JankBot_TeleOP extends OpMode
         {
             arm.intake.stop();
         }
+
+        telemetry.addData("pos: ", mechOperator.tiltIntakePosition());
+        telemetry.addData("realpos", arm.intake.getTiltPosition());
     }
 
     /*
