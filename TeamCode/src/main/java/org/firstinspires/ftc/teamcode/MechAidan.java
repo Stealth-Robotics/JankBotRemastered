@@ -21,7 +21,8 @@ public class MechAidan implements MechOperator
     @Override
     public int extendPosition()
     {
-        return (int)(gamepad.right_trigger * Constants.EXTEND_UPPER_LIMIT);
+//        return (int)(gamepad.right_trigger * Constants.EXTEND_UPPER_LIMIT);
+        return (int)(-gamepad.left_stick_y  * Constants.EXTEND_UPPER_LIMIT / 2 + Constants.EXTEND_UPPER_LIMIT / 2);
     }
 
     @Override
