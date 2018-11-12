@@ -16,7 +16,7 @@ public class Intake
         this.leftWheel = leftWheel;
         this.rightWheel = rightWheel;
 
-        this.rightWheel.setDirection(CRServo.Direction.REVERSE);
+        this.leftWheel.setDirection(CRServo.Direction.REVERSE);
 
         this.tilt = tilt;
         this.tilt.setDirection(DcMotor.Direction.REVERSE);
