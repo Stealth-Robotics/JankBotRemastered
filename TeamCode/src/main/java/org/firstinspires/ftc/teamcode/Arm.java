@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -10,14 +11,6 @@ import static java.lang.Thread.sleep;
 public class Arm {
 
     public boolean climbed;
-
-    //TODO find actual limits
-    private final int LIFT_LOWER_LIMIT = 0;
-    private final int LIFT_UPPER_LIMIT = 500;
-
-    //TODO find actual limits
-    private final int EXTEND_LOWER_LIMIT = 0;
-    private final int EXTEND_UPPER_LIMIT = 1000;
 
 //    private boolean isZeroed = false;
 
@@ -38,6 +31,7 @@ public class Arm {
                 Servo latchRelease)
     {
         this.lift = lift;
+        this.lift.setDirection(DcMotorSimple.Direction.REVERSE);
         this.lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         this.extend = extend;
@@ -60,8 +54,8 @@ public class Arm {
     public void setLiftPower(double power)
     {
         int currentPosition = lift.getCurrentPosition();
-        if (power >= 0 && currentPosition <= LIFT_UPPER_LIMIT ||
-                power <= 0 && currentPosition >= LIFT_LOWER_LIMIT)// &&
+        if (power >= 0 && currentPosition <= Constants.LIFT_UPPER_LIMIT ||
+                power <= 0 && currentPosition >= Constants.LIFT_LOWER_LIMIT)// &&
 //                isZeroed)
         {
             lift.setPower(power);
@@ -70,7 +64,7 @@ public class Arm {
 
     public void setLiftPosition(int position)
     {
-        if (position >= LIFT_LOWER_LIMIT && position <= LIFT_UPPER_LIMIT)// && isZeroed)
+        if (position >= Constants.LIFT_LOWER_LIMIT && position <= Constants.LIFT_UPPER_LIMIT)// && isZeroed)
         {
             lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             lift.setTargetPosition(position);
@@ -85,8 +79,8 @@ public class Arm {
     public void setExtendPower(double power)
     {
         int currentPosition = extend.getCurrentPosition();
-        if (power >= 0 && currentPosition <= EXTEND_UPPER_LIMIT ||
-                power <= 0 && currentPosition >= EXTEND_LOWER_LIMIT)// &&
+        if (power >= 0 && currentPosition <= Constants.EXTEND_UPPER_LIMIT ||
+                power <= 0 && currentPosition >= Constants.EXTEND_LOWER_LIMIT)// &&
 //                isZeroed)
         {
             extend.setPower(power);
@@ -95,7 +89,7 @@ public class Arm {
 
     public void setExtendPostion(int position)
     {
-        if (position >= EXTEND_LOWER_LIMIT && position <= EXTEND_UPPER_LIMIT)// && isZeroed)
+        if (position >= Constants.EXTEND_LOWER_LIMIT && position <= Constants.EXTEND_UPPER_LIMIT)// && isZeroed)
         {
             extend.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             extend.setTargetPosition(position);
@@ -105,7 +99,7 @@ public class Arm {
     public void liftToScore()
     {
         lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        lift.setTargetPosition(LIFT_UPPER_LIMIT);
+        lift.setTargetPosition(Constants.LIFT_UPPER_LIMIT);
         lift.setPower(0.5);
     }
 
@@ -127,7 +121,7 @@ public class Arm {
             e.printStackTrace();
         }
 
-        lift.setTargetPosition(LIFT_LOWER_LIMIT);
+        lift.setTargetPosition(Constants.LIFT_LOWER_LIMIT);
 
         try
         {
@@ -148,7 +142,7 @@ public class Arm {
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         extend.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
-        lift.setTargetPosition(LIFT_UPPER_LIMIT);
+        lift.setTargetPosition(Constants.LIFT_UPPER_LIMIT);
         try
         {
             sleep(3000);

@@ -44,7 +44,7 @@ public class JankBot_AutoOP3 extends LinearOpMode
 
         base.setSpeed(0.5);
 
-        waitToDrive(3000);
+        waitToDrive(5000);
     }
 
     public void wait(int wait)
